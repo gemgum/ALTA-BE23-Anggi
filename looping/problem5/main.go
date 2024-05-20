@@ -5,7 +5,7 @@ import "fmt"
 func main() {
 	//Problem 5 - Exponentiation
 	var x, n int
-	fmt.Print("\nCek Bilangan Prima\n\n")
+	fmt.Print("\nHitung Pangkat\n\n")
 	fmt.Printf("Masukan Angka = ")
 	fmt.Scanln(&x)
 	fmt.Printf("Masukan Pangkat = ")
