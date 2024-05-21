@@ -7,28 +7,38 @@ import (
 	"strings"
 )
 
+func encryptData(kata string) {
+
+	var hasilAkhir string
+	for i := 0; i < len(kata); i++ {
+
+		if kata[i] >= 65 && kata[i] <= 90 {
+			if kata[i] >= 81 {
+				hasilAkhir = hasilAkhir + string(kata[i]-16)
+			} else {
+				hasilAkhir = hasilAkhir + string(kata[i]+10)
+			}
+
+		} else {
+			hasilAkhir = hasilAkhir + string(kata[i])
+
+		}
+
+	}
+
+	fmt.Println(hasilAkhir)
+
+}
+
 func main() {
-	//Problem 4 - Kata Palindrome
-	fmt.Print("\nCek Kata Palindrome\n")
+	// Problem 4 - Ubah Huruf
+	fmt.Print("\nUbah Huruf\n")
 	fmt.Printf("Masukan Kata = ")
 
-	reader := bufio.NewReader(os.Stdin) // masukan keyboard
-	kata, _ := reader.ReadString('\n')  // baca string yang tersedia
-	kata = strings.TrimSpace(kata)      // hilangkan '\n'
+	reader := bufio.NewReader(os.Stdin)
+	kata, _ := reader.ReadString('\n')
+	kata = strings.TrimSpace(kata)
 
-	var kataBantu string
-
-	// Reverse kata pindah ke kataBantu
-	for _, v := range kata {
-		kataBantu = string(v) + kataBantu
-	}
-
-	var palindrome int = strings.Compare(kata, kataBantu)
-	if palindrome != 0 {
-		fmt.Println("Kata", kata, "Merupakan Bukan Kata Palindrome")
-	} else {
-		fmt.Println("Kata", kata, "Merupakan Kata Palindrome")
-
-	}
+	encryptData(kata)
 
 }
