@@ -2,41 +2,27 @@ package main
 
 import "fmt"
 
-func drawXYZ(angka int) {
-	var spasi = angka
-	var hasil int
-	for i := 0; i < angka; i++ {
-		for j := 0; j < spasi; j++ {
-			hasil++
-			switch {
-			case hasil%3 == 0:
-				{
-					fmt.Print("X ")
-				}
-			case hasil%2 != 0:
-				{
-					fmt.Print("Y ")
-				}
-			case hasil%2 == 0:
-				{
-					fmt.Print("Z ")
-				}
+func CaesarCipher(off int, kata string) string {
+	var hasilAkhir string
 
+	for _, v := range kata {
+		var kata_pos int = int(v)
+		for j := 0; j < off; j++ {
+			kata_pos++
+			if kata_pos > 122 {
+				kata_pos = 97
 			}
 		}
-
-		fmt.Println("")
-
+		hasilAkhir += fmt.Sprint(string(kata_pos))
 	}
+	return hasilAkhir
 }
 
 func main() {
-	// Problem 2 - Draw X Y Z
-	var angka int
-	fmt.Print("\nDraw X Y Z \n\n")
-	fmt.Printf("Masukan Angka = ")
-	fmt.Scanln(&angka)
-
-	drawXYZ(angka)
-
+	// Problem 2 - Caesar Cipher
+	fmt.Println(CaesarCipher(3, "abc"))
+	fmt.Println(CaesarCipher(2, "alta"))
+	fmt.Println(CaesarCipher(10, "alterraacademy"))
+	fmt.Println(CaesarCipher(1, "abcdefghijklmnopqrstuvwxyz"))
+	fmt.Println(CaesarCipher(1000, "abcdefghijklmnopqrstuvwxyz"))
 }

@@ -2,31 +2,34 @@ package main
 
 import "fmt"
 
-func playWithAsterisk(angka int) {
-	var spasi = angka
-	var bintang int
-	for i := 0; i <= angka; i++ {
-		for j := 0; j < spasi; j++ {
-			fmt.Print(" ")
-		}
-		bintang++
-		for k := 0; k < bintang; k++ {
-			fmt.Print("* ")
-		}
+func CompareString(kata1 string, kata2 string) string {
+	var value string
+	if len(kata1) > len(kata2) {
+		for i, _ := range kata2 {
+			if kata2[i] == kata1[i] {
+				value += string(kata1[i])
+			}
 
-		fmt.Println("")
-		spasi--
+		}
+	} else {
+		for i, _ := range kata1 {
+			if kata1[i] == kata2[i] {
+				value += string(kata2[i])
+			}
 
+		}
 	}
+
+	return value
 }
 
 func main() {
-	// Problem 1 - Play With Asterisk
-	var angka int
-	fmt.Print("\nPlay With Asterisk \n\n")
-	fmt.Printf("Masukan Angka = ")
-	fmt.Scanln(&angka)
+	// Problem 1 - Compare String
 
-	playWithAsterisk(angka)
+	fmt.Println(CompareString("AKA", "AKASHI"))
+	fmt.Println(CompareString("KANGOORO", "KANG"))
+	fmt.Println(CompareString("KI", "KIJANG"))
+	fmt.Println(CompareString("KUPU-KUPU", "KUPU"))
+	fmt.Println(CompareString("ILALANG", "ILA"))
 
 }
