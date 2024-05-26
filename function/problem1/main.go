@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func CompareString(kata1 string, kata2 string) string {
+func caesar(kata1 string, kata2 string) string {
 	var value string
 	if len(kata1) > len(kata2) {
 		for i, _ := range kata2 {
@@ -26,10 +26,10 @@ func CompareString(kata1 string, kata2 string) string {
 func main() {
 	// Problem 1 - Compare String
 
-	fmt.Println(CompareString("AKA", "AKASHI"))
-	fmt.Println(CompareString("KANGOORO", "KANG"))
-	fmt.Println(CompareString("KI", "KIJANG"))
-	fmt.Println(CompareString("KUPU-KUPU", "KUPU"))
-	fmt.Println(CompareString("ILALANG", "ILA"))
+	fmt.Println(caesar("AKA", "AKASHI"))
+	fmt.Println(caesar("KANGOORO", "KANG"))
+	fmt.Println(caesar("KI", "KIJANG"))
+	fmt.Println(caesar("KUPU-KUPU", "KUPU"))
+	fmt.Println(caesar("ILALANG", "ILA"))
 
 }
