@@ -1,2 +1,2 @@
 ﻿# ALTA-BE23-Anggi
-Tugas Part 1 - Problem 3,4,5,6
+Tugas Part 2 - Problem 1-6
