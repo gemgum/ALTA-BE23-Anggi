@@ -7,44 +7,44 @@ import (
 
 func GetStrongestKnight(dragon, knight []int) []int {
 	sort.Ints(knight)
-	var j int
+	// var j int
 
-	if len(dragon) > len(knight) {
-		j = len(dragon)
-	} else {
-		j = len(knight)
-	}
+	// if len(dragon) > len(knight) {
+	// 	j = len(dragon)
+	// } else {
+	// 	j = len(knight)
+	// }
 
-	var theKnight []int = make([]int, j)
-	j = 0
-	for i := len(knight) - 1; i >= 0; i-- {
-		theKnight[j] = knight[i]
-		// fmt.Println(theKnight[j])
-		// fmt.Println(knight[i])
-		j++
-	}
-	// fmt.Println(theKnight)
-	return theKnight
+	// var theKnight []int = make([]int, j)
+	// j = 0
+	// // for i := len(knight) - 1; i >= 0; i-- {
+	// for i := 0; i < len(knight); i++ {
+	// 	theKnight[j] = knight[i]
+	// 	j++
+	// }
+	// return theKnight
+	return knight
 }
 
 func GetWeakestDragon(dragon, knight []int) []int {
 	sort.Ints(dragon)
-	var j int
+	// var j int
 
-	if len(dragon) > len(knight) {
-		j = len(dragon)
-	} else {
-		j = len(knight)
-	}
+	// if len(dragon) > len(knight) {
+	// 	j = len(dragon)
+	// } else {
+	// 	j = len(knight)
+	// }
 
-	var theDragon []int = make([]int, j)
-	j = 0
-	for i := len(dragon) - 1; i >= 0; i-- {
-		theDragon[j] = dragon[i]
-		j++
-	}
+	// var theDragon []int = make([]int, j)
+	// j = 0
+	// for i := 0; i < len(dragon); i++ {
+	// 	theDragon[j] = dragon[i]
+	// 	j++
+	// }
 	// fmt.Println(theDragon)
-	return theDragon
+	// return theDragon
+	return dragon
 }
 
 func DragonOfLoowater(dragonHead, KnightHeight []int) {
@@ -54,21 +54,38 @@ func DragonOfLoowater(dragonHead, KnightHeight []int) {
 	StrongestKnight := GetStrongestKnight(dragonHead, KnightHeight)
 	WeakestDragon := GetWeakestDragon(dragonHead, KnightHeight)
 
+	// fmt.Println("D", WeakestDragon)
+	// fmt.Println("K", StrongestKnight)
+
+	var heightMinimum int
+	// var sizeLoop int
+	// if len(StrongestKnight) < len(WeakestDragon) {
+	// 	sizeLoop = len(WeakestDragon)
+	// } else {
+	// 	sizeLoop = len(StrongestKnight)
+	// }
+
 	for i := 0; i < len(WeakestDragon); i++ {
-		if WeakestDragon[i] == 0 || StrongestKnight[i] == 0 {
+		if WeakestDragon[i] == 0 {
 			break
 		}
+		for j := 0; j < len(StrongestKnight); j++ {
+			if StrongestKnight[j] == 0 {
+				countSuccess--
+				break
+			}
+			if WeakestDragon[i]-StrongestKnight[j] <= 0 {
+				countSuccess++
+				heightMinimum = heightMinimum + StrongestKnight[j]
+				break
 
-		if WeakestDragon[i]-StrongestKnight[i] < 0 {
-			countSuccess++
-
-		} else {
-			countSuccess--
+			}
 		}
-
 	}
-	if countSuccess > 0 {
-		fmt.Println(dragonHead[0] + dragonHead[1] + 1)
+
+	if countSuccess >= len(WeakestDragon) {
+		// fmt.Println(countSuccess)
+		fmt.Println(heightMinimum)
 	} else {
 		fmt.Println("knight fail")
 	}
