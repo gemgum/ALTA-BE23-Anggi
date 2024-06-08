@@ -129,65 +129,65 @@ select * from loans where status_loan = true;
 select * from loans where status_loan = false;
 
 
---Tampilkan data buku yang belum pernah dipinjam oleh user.
-select b.title, l.status_loan 
-from books b
-left join loans l on l.book_id  = b.id
-where l.status_loan is null;
+-- --Tampilkan data buku yang belum pernah dipinjam oleh user.
+-- select b.title, l.status_loan 
+-- from books b
+-- left join loans l on l.book_id  = b.id
+-- where l.status_loan is null;
 
---Tampilkan data user beserta banyaknya buku yang pernah dia pinjam.
-select u.name, l.book_id 
-from users u
-join loans l on l.user_id  = u.id;
+-- --Tampilkan data user beserta banyaknya buku yang pernah dia pinjam.
+-- select u.name, l.book_id 
+-- from users u
+-- join loans l on l.user_id  = u.id;
 
---Tampilkan data user yang belum pernah meminjam buku.
-select u.name  , l.book_id 
-from users u
-left join loans l on l.user_id  = u.id
-where l.book_id is null;
+-- --Tampilkan data user yang belum pernah meminjam buku.
+-- select u.name  , l.book_id 
+-- from users u
+-- left join loans l on l.user_id  = u.id
+-- where l.book_id is null;
 
---Tampilkan data user yang sudah pernah meminjam buku.
-select u.name  , l.book_id 
-from users u
-join loans l on l.user_id  = u.id;
+-- --Tampilkan data user yang sudah pernah meminjam buku.
+-- select u.name  , l.book_id 
+-- from users u
+-- join loans l on l.user_id  = u.id;
 
---Tampilkan data user yang paling banyak meminjam buku
-select 
-    u.name, 
-    count(l.user_id) as loan_count
-from users u
-left join loans l on l.user_id = u.id
-group by u.name
-order by loan_count desc ;
+-- --Tampilkan data user yang paling banyak meminjam buku
+-- select 
+--     u.name, 
+--     count(l.user_id) as loan_count
+-- from users u
+-- left join loans l on l.user_id = u.id
+-- group by u.name
+-- order by loan_count desc ;
 
---Tampilkan data genre beserta banyaknya buku di masing-masing genre
-select 
---    b.title as title,
-    g.genre_name as genre,
-    count(b.title)
-from books b
-left join genres g on b.genre_id = g.id
-group by genre;
+-- --Tampilkan data genre beserta banyaknya buku di masing-masing genre
+-- select 
+-- --    b.title as title,
+--     g.genre_name as genre,
+--     count(b.title)
+-- from books b
+-- left join genres g on b.genre_id = g.id
+-- group by genre;
 
---Tampilkan genre yang paling banyak dipinjam bukunya oleh user
-select 
-    g.genre_name as genre,
-    count(b.title)
-from books b
-left join genres g on b.genre_id = g.id
-left join loans l on l.book_id  = b.id 
-group by genre;
+-- --Tampilkan genre yang paling banyak dipinjam bukunya oleh user
+-- select 
+--     g.genre_name as genre,
+--     count(b.title)
+-- from books b
+-- left join genres g on b.genre_id = g.id
+-- left join loans l on l.book_id  = b.id 
+-- group by genre;
 
---Tampilkan data user, beserta buku yang dipinjam dan sekaligus genre dari buku tersebut dalam satu query statement.
+-- --Tampilkan data user, beserta buku yang dipinjam dan sekaligus genre dari buku tersebut dalam satu query statement.
 
-select 
-    u.name, 
-    b.title,
-    g.genre_name 
-from users u
-left join loans l on l.user_id = u.id
-left join books b on b.id = l.book_id 
-left join genres g on g.id = b.genre_id
-group by u.name, title, genre_name
-order by b.title asc;
+-- select 
+--     u.name, 
+--     b.title,
+--     g.genre_name 
+-- from users u
+-- left join loans l on l.user_id = u.id
+-- left join books b on b.id = l.book_id 
+-- left join genres g on g.id = b.genre_id
+-- group by u.name, title, genre_name
+-- order by b.title asc;
 
