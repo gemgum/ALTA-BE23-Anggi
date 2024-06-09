@@ -1,2 +1,2 @@
 ﻿# ALTA-BE23-Anggi
-Gorm
+Mengerjakan Hackerrank SQL 15 Soal
