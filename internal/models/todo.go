@@ -72,8 +72,8 @@ func (tm *TodoModel) DeleteTodo(deleteData Todo) (Todo, error) {
 
 func (tm *TodoModel) ShowTodo(showTodoData Todo) ([]Todo, error) {
 	todos := make([]Todo, 0)
-	query := `SELECT * FROM "be23"."todos"
-	WHERE owner = ?  AND "todos"."deleted_at" IS NULL;`
+	query := `SELECT * FROM "be23"."items"
+	WHERE owner = ?  AND "items"."deleted_at" IS NULL;`
 	err := tm.db.Debug().Raw(query, &showTodoData.Owner).Scan(&todos).Error
 	fmt.Println(query)
 	if err != nil {
