@@ -9,6 +9,7 @@ import (
 
 type Todo struct {
 	gorm.Model
+	ID       uint
 	Activity string
 	Mark     bool
 	Owner    uint
@@ -60,8 +61,8 @@ func (tm *TodoModel) DeleteTodo(deleteData Todo) (Todo, error) {
 	// err := tm.db.Debug().Where("owner = ? AND activity = ?", deleteData.Owner, deleteData.Activity).Delete(&Todo{}).Error
 
 	query := ` UPDATE "be23"."todos" SET "deleted_at"= ? 
-	WHERE (owner = ? AND activity = ?) AND "todos"."deleted_at" IS NULL `
-	err := tm.db.Exec(query, &deleteData.UpdatedAt, &deleteData.Owner, &deleteData.Activity).Error
+	WHERE ID = ? AND "todos"."deleted_at" IS NULL;`
+	err := tm.db.Debug().Exec(query, &deleteData.UpdatedAt, &deleteData.ID).Error
 	fmt.Println(query)
 	if err != nil {
 		return Todo{}, err
@@ -70,15 +71,17 @@ func (tm *TodoModel) DeleteTodo(deleteData Todo) (Todo, error) {
 	return deleteData, nil
 }
 
-func (tm *TodoModel) ShowTodo(showTodoData Todo) ([]Todo, error) {
+func (tm *TodoModel) ShowTodo(id uint) ([]Todo, error) {
 	todos := make([]Todo, 0)
-	query := `SELECT * FROM "be23"."items"
-	WHERE owner = ?  AND "items"."deleted_at" IS NULL;`
-	err := tm.db.Debug().Raw(query, &showTodoData.Owner).Scan(&todos).Error
+	// var todos Todo
+
+	query := `SELECT * FROM "be23"."todos"
+	WHERE owner = ?  AND "todos"."deleted_at" IS NULL;`
+	err := tm.db.Debug().Raw(query, id).Scan(&todos).Error
 	fmt.Println(query)
 	if err != nil {
 		// return Todo{}, err
-		return nil, err
+		return todos, err
 
 	}
 	return todos, nil
