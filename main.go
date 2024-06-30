@@ -3,11 +3,15 @@ package main
 import (
 	"fmt"
 	"main/configs"
+	"main/routes"
+
+	// "main/internal/controllers/todos"
 	"main/internal/controllers/todos"
 	"main/internal/controllers/users"
 	"main/internal/models"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -22,21 +26,25 @@ func main() {
 	connection.AutoMigrate(&models.User{}, &models.Todo{})
 
 	// var inputMenu int
-	um := models.NewUserModel(connection)
-	uc := users.NewUserController(um)
+	um := models.UserModel{Connection: connection}
+	uc := users.UserController{Model: um}
 
-	tu := models.NewTodoModel(connection)
-	tc := todos.NewTodoController(tu)
+	tu := models.TodoModel{Connection: connection}
+	tc := todos.TodoController{Model: tu}
 
 	e := echo.New()
 
-	e.POST("/users", uc.Register)
-	e.POST("/login", uc.Login)
-	e.POST("/todo", tc.AddTodo)
-	e.PUT("/todo", tc.UpdateTodo)
-	e.DELETE("/todo", tc.DeleteTodo)
-	e.GET("/todo/:id", tc.ShowTodo)
+	// e.POST("/users", uc.Register)
+	// e.POST("/login", uc.Login)
+	// e.POST("/todo", tc.AddTodo)
+	// e.PUT("/todo", tc.UpdateTodo)
+	// e.DELETE("/todo", tc.DeleteTodo)
+	// e.GET("/todo/:id", tc.ShowTodo)
 
-	e.Start(":8000")
+	e.Pre(middleware.RemoveTrailingSlash())
+	e.Use(middleware.Logger())
+	e.Use(middleware.CORS()) // ini aja cukup
+	routes.InitRoute(e, uc, tc)
+	e.Logger.Fatal(e.Start(":8000"))
 
 }

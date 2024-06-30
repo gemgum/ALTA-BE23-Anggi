@@ -17,18 +17,12 @@ type User struct {
 }
 
 type UserModel struct {
-	db *gorm.DB
-}
-
-func NewUserModel(connection *gorm.DB) *UserModel {
-	return &UserModel{
-		db: connection,
-	}
+	Connection *gorm.DB
 }
 
 func (um *UserModel) Login(email string, password string) (User, error) {
 	var result User
-	err := um.db.Where("email = ? AND password = ?", email, password).First(&result).Error
+	err := um.Connection.Where("email = ? AND password = ?", email, password).First(&result).Error
 	if err != nil {
 		return User{}, err
 	}
@@ -36,7 +30,7 @@ func (um *UserModel) Login(email string, password string) (User, error) {
 }
 
 func (um *UserModel) Register(newUser User) (bool, error) {
-	err := um.db.Create(&newUser).Error
+	err := um.Connection.Create(&newUser).Error
 	if err != nil {
 		return false, err
 	}

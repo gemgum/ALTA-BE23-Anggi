@@ -11,11 +11,12 @@ import (
 )
 
 type setting struct {
-	Host     string
-	User     string
-	Password string
-	Port     string
-	DBNAME   string
+	Host      string
+	User      string
+	Password  string
+	Port      string
+	DBNAME    string
+	JWTSECRET string
 }
 
 func ImportSetting() setting {
@@ -29,6 +30,8 @@ func ImportSetting() setting {
 	result.Password = os.Getenv("pospw")
 	result.Port = os.Getenv("posport")
 	result.DBNAME = os.Getenv("dbname")
+	result.JWTSECRET = os.Getenv("JWT_SECRET")
+
 	return result
 }
 

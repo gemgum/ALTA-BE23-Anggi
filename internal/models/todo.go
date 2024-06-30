@@ -16,18 +16,12 @@ type Todo struct {
 }
 
 type TodoModel struct {
-	db *gorm.DB
-}
-
-func NewTodoModel(connection *gorm.DB) *TodoModel {
-	return &TodoModel{
-		db: connection,
-	}
+	Connection *gorm.DB
 }
 
 func (tm *TodoModel) AddTodo(newData Todo) (Todo, error) {
 	newData.Mark = false
-	err := tm.db.Create(&newData).Error
+	err := tm.Connection.Create(&newData).Error
 	if err != nil {
 		return Todo{}, err
 	}
@@ -38,14 +32,11 @@ func (tm *TodoModel) AddTodo(newData Todo) (Todo, error) {
 func (tm *TodoModel) UpdateTodo(updateData Todo) (Todo, error) {
 	updateData.Mark = true
 	updateData.UpdatedAt = time.Now()
-
-	// err := tm.db.Debug().Model(&Todo{}).Where("owner = ? AND activity = ?", &updateData.Owner, &updateData.Activity).Updates(map[string]interface{}{
-	// 	"mark":     updateData.Mark,
-	// }).Error
-
-	query := `UPDATE "be23"."todos" SET "mark"=?,"updated_at"= ?
-	WHERE "owner" = ? AND "activity"= ? AND "mark"= false AND "todos"."deleted_at" IS NULL;`
-	err := tm.db.Exec(query, &updateData.Mark, &updateData.UpdatedAt, &updateData.Owner, &updateData.Activity).Error
+	// query := `UPDATE "be23"."todos" SET "mark"=?,"updated_at"= ?
+	// WHERE "owner" = ? AND "activity"= ? AND "mark"= false AND "todos"."deleted_at" IS NULL;`
+	query := `UPDATE "be23"."todos" SET "mark"= true,"updated_at"= ?
+	WHERE ID = ? AND "mark"= false AND "todos"."deleted_at" IS NULL;`
+	err := tm.Connection.Exec(query, &updateData.UpdatedAt, &updateData.ID).Error
 	fmt.Println(query)
 	if err != nil {
 		return Todo{}, err
@@ -61,8 +52,8 @@ func (tm *TodoModel) DeleteTodo(deleteData Todo) (Todo, error) {
 	// err := tm.db.Debug().Where("owner = ? AND activity = ?", deleteData.Owner, deleteData.Activity).Delete(&Todo{}).Error
 
 	query := ` UPDATE "be23"."todos" SET "deleted_at"= ? 
-	WHERE ID = ? AND "todos"."deleted_at" IS NULL;`
-	err := tm.db.Debug().Exec(query, &deleteData.UpdatedAt, &deleteData.ID).Error
+	WHERE ID = ? AND owner = ? AND "todos"."deleted_at" IS NULL;`
+	err := tm.Connection.Debug().Exec(query, &deleteData.UpdatedAt, &deleteData.ID, &deleteData.Owner).Error
 	fmt.Println(query)
 	if err != nil {
 		return Todo{}, err
@@ -77,7 +68,7 @@ func (tm *TodoModel) ShowTodo(id uint) ([]Todo, error) {
 
 	query := `SELECT * FROM "be23"."todos"
 	WHERE owner = ?  AND "todos"."deleted_at" IS NULL;`
-	err := tm.db.Debug().Raw(query, id).Scan(&todos).Error
+	err := tm.Connection.Debug().Raw(query, id).Scan(&todos).Error
 	fmt.Println(query)
 	if err != nil {
 		// return Todo{}, err
