@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\" : \"pam@bud.com\",\r\n    \"password\" : \"pam123\"\r\n\r\n}",
+					"raw": "{\r\n    \"email\": \"agus@pri.com\",\r\n    \"password\": \"agus123\"\r\n}\r\n\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -65,11 +65,21 @@
 		{
 			"name": "TodoAdd",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXNAcHJpLmNvbSIsImV4cCI6MTcxOTc3OTA5OSwiaWF0IjoxNzE5NzY4Mjk5LCJpZCI6Mn0.JVpIuY14SQCAQLa2RAxOEv9Sx0pSnQzzAus1L3m6MlQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"pam\",\r\n    \"password\": \"pam123\",\r\n    \"email\": \"pam@bud.com\",\r\n    \"phone\": \"0851235\"\r\n}",
+					"raw": "{\r\n    \"activity\": \"ngising\",\r\n    \"owner\": 2,\r\n    \"mark\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -93,11 +103,21 @@
 		{
 			"name": "TodoUpdate",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXNAcHJpLmNvbSIsImV4cCI6MTcxOTc3ODk4MiwiaWF0IjoxNzE5NzY4MTgyLCJpZCI6Mn0.KQ9FV8FxxpWs2Z_qs6uxR3wKo8XjsU94g_qSdmfYRO0",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"activity\": \"maraton\",\r\n    \"owner\": 1,\r\n    \"mark\": true\r\n}",
+					"raw": "{\r\n    \"owner\": 2,\r\n    \"id\" : 10\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -120,38 +140,25 @@
 		},
 		{
 			"name": "ShowTodo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8000/todo/:1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"todo",
-						":1"
-					],
-					"variable": [
+				"auth": {
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "1",
-							"value": ""
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXNAcHJpLmNvbSIsImV4cCI6MTcxOTc3NzIxNCwiaWF0IjoxNzE5NzY2NDE0LCJpZCI6Mn0.0Yft6VJxya54tedGAwz3Tbus3roUul7kAWNP5jwCKro",
+							"type": "string"
 						}
 					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "TodoDelete",
-			"request": {
-				"method": "DELETE",
+				},
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\" : 8\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -167,6 +174,45 @@
 					"port": "8000",
 					"path": [
 						"todo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TodoDelete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXNAcHJpLmNvbSIsImV4cCI6MTcxOTc3Nzc2MSwiaWF0IjoxNzE5NzY2OTYxLCJpZCI6Mn0.VYe7wmTALHwbRh6-UEdNvssPHNcOu1-uKJM3zZ7cgwk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/todo/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"todo",
+						"9"
 					]
 				}
 			},
