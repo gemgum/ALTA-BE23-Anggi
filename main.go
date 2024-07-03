@@ -5,9 +5,34 @@ import (
 	"main/configs"
 	"main/routes"
 
+	"main/internal/features/users"
+	userHandler "main/internal/features/users/handler"
+	userRepository "main/internal/features/users/repository"
+	userServices "main/internal/features/users/services"
+
+	"main/internal/features/todos"
+	todoHandler "main/internal/features/todos/handler"
+	todoRepository "main/internal/features/todos/repository"
+	todoServices "main/internal/features/todos/services"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"gorm.io/gorm"
 )
+
+func InitUserRoute(db *gorm.DB) users.Handler {
+	um := userRepository.NewUserModel(db)
+	us := userServices.NewUserService(um)
+	uc := userHandler.NewUserController(us)
+	return uc
+}
+
+func InitTodoRoute(db *gorm.DB) todos.Handler {
+	tm := todoRepository.NewTodoModel(db)
+	ts := todoServices.NewTodoService(tm)
+	tc := todoHandler.NewTodoController(ts)
+	return tc
+}
 
 func main() {
 
@@ -20,22 +45,16 @@ func main() {
 
 	// connection.AutoMigrate(&models.Todo{})
 
-	// tu := models.TodoModel{Connection: connection}
-	// tc := todos.TodoController{Model: tu}
-
 	e := echo.New()
-
-	// e.POST("/users", uc.Register)
-	// e.POST("/login", uc.Login)
-	// e.POST("/todo", tc.AddTodo)
-	// e.PUT("/todo", tc.UpdateTodo)
-	// e.DELETE("/todo", tc.DeleteTodo)
-	// e.GET("/todo/:id", tc.ShowTodo)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS()) // ini aja cukup
-	routes.InitRoute(e, connection)
+
+	ur := InitUserRoute(connection)
+	tr := InitTodoRoute(connection)
+
+	routes.InitRoute(e, tr, ur)
 	e.Logger.Fatal(e.Start(":8000"))
 
 }
