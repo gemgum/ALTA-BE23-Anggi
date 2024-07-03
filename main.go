@@ -5,11 +5,6 @@ import (
 	"main/configs"
 	"main/routes"
 
-	// "main/internal/controllers/todos"
-	"main/internal/controllers/todos"
-	"main/internal/controllers/users"
-	"main/internal/models"
-
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -23,14 +18,10 @@ func main() {
 		return
 	}
 
-	connection.AutoMigrate(&models.User{}, &models.Todo{})
+	// connection.AutoMigrate(&models.Todo{})
 
-	// var inputMenu int
-	um := models.UserModel{Connection: connection}
-	uc := users.UserController{Model: um}
-
-	tu := models.TodoModel{Connection: connection}
-	tc := todos.TodoController{Model: tu}
+	// tu := models.TodoModel{Connection: connection}
+	// tc := todos.TodoController{Model: tu}
 
 	e := echo.New()
 
@@ -44,7 +35,7 @@ func main() {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS()) // ini aja cukup
-	routes.InitRoute(e, uc, tc)
+	routes.InitRoute(e, connection)
 	e.Logger.Fatal(e.Start(":8000"))
 
 }

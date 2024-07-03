@@ -1,7 +1,7 @@
-package users
+package handler
 
 import (
-	"main/internal/models"
+	"main/internal/features/users"
 )
 
 type LoginRequest struct {
@@ -16,8 +16,8 @@ type RegisterRequest struct {
 	Phone    string `json:"phone"`
 }
 
-func ToModelUsers(r RegisterRequest) models.User {
-	return models.User{
+func ToModelUsers(r RegisterRequest) users.Users {
+	return users.Users{
 		Name:     r.Name,
 		Password: r.Password,
 		Email:    r.Email,

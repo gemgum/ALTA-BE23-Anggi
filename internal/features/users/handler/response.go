@@ -1,6 +1,6 @@
-package users
+package handler
 
-import "main/internal/models"
+import user "main/internal/features/users"
 
 type LoginResponse struct {
 	ID    uint   `json:"id"`
@@ -9,7 +9,7 @@ type LoginResponse struct {
 	Phone string `json:"hp"`
 }
 
-func ToLoginReponse(input models.User) LoginResponse {
+func ToLoginReponse(input user.Users) LoginResponse {
 	return LoginResponse{
 		ID:    input.ID,
 		Name:  input.Name,
