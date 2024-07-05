@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"main/configs"
-	"main/routes"
+	"main/internal/routes"
+	"main/internal/utils"
 
 	"main/internal/features/users"
 	userHandler "main/internal/features/users/handler"
@@ -15,6 +16,7 @@ import (
 	todoRepository "main/internal/features/todos/repository"
 	todoServices "main/internal/features/todos/services"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"gorm.io/gorm"
@@ -22,7 +24,10 @@ import (
 
 func InitUserRoute(db *gorm.DB) users.Handler {
 	um := userRepository.NewUserModel(db)
-	us := userServices.NewUserService(um)
+	pu := utils.NewPasswordUtility()
+	jwt := utils.NewJwtUtility()
+	vldt := utils.NewAccountUtility(*validator.New())
+	us := userServices.NewUserService(um, vldt, pu, jwt)
 	uc := userHandler.NewUserController(us)
 	return uc
 }
@@ -30,7 +35,8 @@ func InitUserRoute(db *gorm.DB) users.Handler {
 func InitTodoRoute(db *gorm.DB) todos.Handler {
 	tm := todoRepository.NewTodoModel(db)
 	ts := todoServices.NewTodoService(tm)
-	tc := todoHandler.NewTodoController(ts)
+	jwt := utils.NewJwtUtility()
+	tc := todoHandler.NewTodoController(ts, jwt)
 	return tc
 }
 
@@ -43,7 +49,7 @@ func main() {
 		return
 	}
 
-	// connection.AutoMigrate(&models.Todo{})
+	connection.AutoMigrate(&todoRepository.Todo{}, &userRepository.User{})
 
 	e := echo.New()
 

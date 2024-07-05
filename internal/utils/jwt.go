@@ -11,7 +11,17 @@ import (
 	// "main/internal/controllers/users"
 )
 
-func GenerateJWT(id uint, email string) (string, error) {
+type JwtUtilityInterface interface {
+	GenerateJWT(id uint, email string) (string, error)
+	DecodeToken(token *jwt.Token) float64
+}
+type jwtUtility struct{}
+
+func NewJwtUtility() JwtUtilityInterface {
+	return &jwtUtility{}
+}
+
+func (j *jwtUtility) GenerateJWT(id uint, email string) (string, error) {
 
 	passKey := configs.ImportSetting().JWTSECRET
 	var data = jwt.MapClaims{}
@@ -33,7 +43,7 @@ func GenerateJWT(id uint, email string) (string, error) {
 	return result, nil
 }
 
-func DecodeToken(token *jwt.Token) float64 {
+func (j *jwtUtility) DecodeToken(token *jwt.Token) float64 {
 	var result float64
 	var claim = token.Claims.(jwt.MapClaims)
 

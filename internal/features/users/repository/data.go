@@ -37,12 +37,3 @@ func toUserQuery(usersfromInputData users.Users) User {
 		BirthDate: usersfromInputData.BirthDate,
 	}
 }
-
-// func toUserData(input user.Users) User {
-// 	return User{
-// 		Name:     input.Name,
-// 		Email:    input.Email,
-// 		Password: input.Password,
-// 		Phone:    input.Phone,
-// 	}
-// }

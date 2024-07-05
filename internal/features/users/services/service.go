@@ -1,52 +1,85 @@
 package services
 
 import (
+	"errors"
+	"log"
 	"main/internal/features/users"
 	"main/internal/utils"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
-type UserServices struct {
-	qry users.Query
+type userServices struct {
+	qry  users.Query
+	pu   utils.PasswordUtilityInterface
+	jwt  utils.JwtUtilityInterface
+	vldt utils.AccountUtilityInterface
 }
 
-func NewUserService(q users.Query) users.Services {
-	return &UserServices{
-		qry: q,
+func NewUserService(q users.Query, v utils.AccountUtilityInterface, p utils.PasswordUtilityInterface, j utils.JwtUtilityInterface) users.Services {
+	return &userServices{
+		qry:  q,
+		pu:   p,
+		jwt:  j,
+		vldt: v,
 	}
 }
 
-func (us *UserServices) Register(newData users.Users) error {
-	processPw, err := utils.GeneratePassword(newData.Password)
+func (us *userServices) Register(newData users.Users) error {
 
+	// err := us.vldt.Struct(&users.RegisterValidate{Email: newData.Email, Password: newData.Password, Name: newData.Name})
+
+	// if err != nil {
+	// 	log.Println("login validation error", err.Error())
+	// 	return errors.New("validasi tidak sesuai")
+	// }
+
+	processPw, err := us.pu.GeneratePassword(newData.Password)
 	if err != nil {
+		log.Println("register generate password error:", err.Error())
+		if err.Error() == bcrypt.ErrMismatchedHashAndPassword.Error() {
+			return errors.New("data tidak boleh kosong")
+		}
 		return err
 	}
-
 	newData.Password = string(processPw)
 
 	err = us.qry.Register(newData)
 
 	if err != nil {
-		return err
-	}
+		log.Println("register sql error:", err.Error())
 
+		// return errors.New(gorm.ErrInvalidData.Error())
+		return errors.New("terjadi kesalahan pada server saat mengolah data")
+	}
 	return nil
 }
 
-func (us *UserServices) Login(email string, password string) (users.Users, string, error) {
+func (us *userServices) Login(email string, password string) (users.Users, string, error) {
+
+	err := us.vldt.EmailPasswordValidator(email, password)
+	// Jika validasi gagal
+	if err != nil {
+		log.Println("validation error:", err.Error())
+		return users.Users{}, "", err
+	}
+
 	result, err := us.qry.Login(email)
 	if err != nil {
+		log.Fatal("Error On Query", err)
 		return users.Users{}, "", err
 	}
 
-	err = utils.CheckPassword([]byte(password), []byte(result.Password))
+	err = us.pu.CheckPassword([]byte(password), []byte(result.Password))
 
 	if err != nil {
+		log.Fatal("Error On Password", err)
 		return users.Users{}, "", err
 	}
 
-	token, err := utils.GenerateJWT(result.ID, result.Email)
+	token, err := us.jwt.GenerateJWT(result.ID, result.Email)
 	if err != nil {
+		log.Fatal("Error On Jwt", err)
 		return users.Users{}, "", err
 	}
 

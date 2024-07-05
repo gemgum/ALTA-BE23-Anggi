@@ -15,11 +15,13 @@ import (
 
 type TodoController struct {
 	tserv todos.Services
+	jwt   utils.JwtUtilityInterface
 }
 
-func NewTodoController(t todos.Services) todos.Handler {
+func NewTodoController(t todos.Services, j utils.JwtUtilityInterface) todos.Handler {
 	return &TodoController{
 		tserv: t,
+		jwt:   j,
 	}
 }
 
@@ -45,7 +47,7 @@ func (tc *TodoController) AddTodo() echo.HandlerFunc {
 			return c.JSON(400, helper.ResponseFormat(400, "bad request", nil))
 		}
 
-		var idFromToken = utils.DecodeToken(c.Get("user").(*jwt.Token))
+		var idFromToken = tc.jwt.DecodeToken(c.Get("user").(*jwt.Token))
 
 		if input.Owner != uint(idFromToken) {
 			return c.JSON(401, helper.ResponseFormat(400, "Unauthorized", nil))
@@ -66,7 +68,7 @@ func (tc *TodoController) UpdateTodo() echo.HandlerFunc {
 			return c.JSON(400, helper.ResponseFormat(400, "bad requestr", nil))
 		}
 
-		var idFromToken = utils.DecodeToken(c.Get("user").(*jwt.Token))
+		var idFromToken = tc.jwt.DecodeToken(c.Get("user").(*jwt.Token))
 
 		if input.Owner != uint(idFromToken) {
 			return c.JSON(401, helper.ResponseFormat(401, "Unauthorized", nil))
@@ -82,7 +84,7 @@ func (tc *TodoController) UpdateTodo() echo.HandlerFunc {
 func (tc *TodoController) DeleteTodo() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var input TodoRequest
-		var idFromToken = utils.DecodeToken(c.Get("user").(*jwt.Token))
+		var idFromToken = tc.jwt.DecodeToken(c.Get("user").(*jwt.Token))
 		input.Owner = uint(idFromToken)
 
 		id := c.Param("id")
@@ -102,7 +104,7 @@ func (tc *TodoController) DeleteTodo() echo.HandlerFunc {
 
 func (tc *TodoController) ShowTodo() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var idFromToken = utils.DecodeToken(c.Get("user").(*jwt.Token))
+		var idFromToken = tc.jwt.DecodeToken(c.Get("user").(*jwt.Token))
 		result, err := tc.tserv.ShowTodo(uint(idFromToken))
 		if err != nil {
 			return c.JSON(500, helper.ResponseFormat(500, "server error", nil))
