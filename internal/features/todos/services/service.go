@@ -1,7 +1,7 @@
 package services
 
 import (
-	"main/internal/features/todos"
+	"be23/internal/features/todos"
 )
 
 type TodoServices struct {

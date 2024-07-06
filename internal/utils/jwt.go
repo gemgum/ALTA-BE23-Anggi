@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"main/configs"
+	"be23/configs"
 	// "main/internal/controllers/users"
 	// "main/internal/controllers/users"
 )

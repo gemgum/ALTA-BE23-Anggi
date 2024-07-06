@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"be23/internal/features/todos"
+	"be23/internal/helper"
+	"be23/internal/utils"
 	"fmt"
-	"main/internal/features/todos"
-	"main/internal/helper"
-	"main/internal/utils"
 	"net/http"
 	"strconv"
 

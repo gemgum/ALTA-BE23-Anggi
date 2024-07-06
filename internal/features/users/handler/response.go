@@ -1,6 +1,6 @@
 package handler
 
-import user "main/internal/features/users"
+import "be23/internal/features/users"
 
 type LoginResponse struct {
 	ID    uint   `json:"id"`
@@ -9,7 +9,7 @@ type LoginResponse struct {
 	Phone string `json:"hp"`
 }
 
-func ToLoginReponse(input user.Users) LoginResponse {
+func ToLoginReponse(input users.Users) LoginResponse {
 	return LoginResponse{
 		ID:    input.ID,
 		Name:  input.Name,

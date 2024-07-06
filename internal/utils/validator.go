@@ -1,9 +1,9 @@
 package utils
 
 import (
+	"be23/internal/features/users"
 	"errors"
 	"log"
-	"main/internal/features/users"
 
 	"github.com/go-playground/validator/v10"
 )

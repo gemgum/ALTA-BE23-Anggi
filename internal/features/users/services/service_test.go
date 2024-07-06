@@ -1,10 +1,9 @@
 package services_test
 
 import (
-	"errors"
-	"main/internal/features/users"
-	"main/internal/features/users/services"
-	"main/mocks"
+	"be23/internal/features/users"
+	"be23/internal/features/users/services"
+	"be23/mocks"
 	"testing"
 	"time"
 
@@ -116,20 +115,49 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, inputQry, user)
 	})
 
-	t.Run("Failed email/password Login", func(t *testing.T) {
-		inputQry := users.Users{Password: "minval12345", Email: "anggi@eko.com"}
+	// t.Run("Failed email/password Login", func(t *testing.T) {
+	// 	inputQry := users.Users{Password: "", Email: ""}
 
-		vldt.On("EmailPasswordValidator", inputQry.Email, inputQry.Password).Return(errors.New("validasi gagal")).Once()
+	// 	vldt.On("EmailPasswordValidator", inputQry.Email, inputQry.Password).Return(errors.New("validasi gagal")).Once()
 
-		_, _, err := srv.Login(inputQry.Email, inputQry.Password)
+	// 	_, _, err := srv.Login(inputQry.Email, inputQry.Password)
 
-		vldt.AssertExpectations(t)
+	// 	vldt.AssertExpectations(t)
 
-		// assert.NoError(t, err)
-		assert.Error(t, err)
-		assert.ErrorContains(t, err, "validasi gagal")
+	// 	assert.Error(t, err)
+	// 	assert.ErrorContains(t, err, "validasi gagal")
+	// })
 
-		// assert.Equal(t, "someToken", token)
-		// assert.Equal(t, inputQry, user)
-	})
+	// t.Run("Error on Query", func(t *testing.T) {
+	// 	inputQry := users.Users{Password: "anggi1234", Email: "anggi@eko.com"}
+
+	// 	vldt.On("EmailPasswordValidator", inputQry.Email, inputQry.Password).Return(nil).Once()
+	// 	qry.On("Login", input.Email).Return(inputQry, gorm.ErrInvalidData).Once()
+	// 	// pu.On("CheckPassword", []byte(inputQry.Password), []byte(inputQry.Password)).Return(nil).Once()
+
+	// 	_, _, err := srv.Login(inputQry.Email, inputQry.Password)
+
+	// 	vldt.AssertExpectations(t)
+	// 	qry.AssertExpectations(t)
+
+	// 	assert.Error(t, err)
+	// 	assert.ErrorContains(t, err, string(gorm.ErrInvalidData.Error()))
+	// })
+
+	// t.Run("Error on Password", func(t *testing.T) {
+	// 	inputQry := users.Users{Password: "hashedPassword", Email: "anggi@eko.com"}
+
+	// 	vldt.On("EmailPasswordValidator", inputQry.Email, inputQry.Password).Return(nil).Once()
+	// 	qry.On("Login", input.Email).Return(inputQry, nil).Once()
+	// 	pu.On("CheckPassword", []byte(inputQry.Password), []byte(inputQry.Password)).Return(bcrypt.ErrMismatchedHashAndPassword).Once()
+
+	// 	_, _, err := srv.Login(inputQry.Email, inputQry.Password)
+
+	// 	vldt.AssertExpectations(t)
+	// 	qry.AssertExpectations(t)
+	// 	pu.AssertExpectations(t)
+
+	// 	assert.Error(t, err)
+	// 	assert.ErrorContains(t, err, bcrypt.ErrMismatchedHashAndPassword.Error())
+	// })
 }

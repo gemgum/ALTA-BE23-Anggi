@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"main/internal/features/users"
-	"main/internal/helper"
+	"be23/internal/features/users"
+	"be23/internal/helper"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

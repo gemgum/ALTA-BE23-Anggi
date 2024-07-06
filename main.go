@@ -1,20 +1,21 @@
 package main
 
 import (
+	"be23/configs"
+	"be23/internal/routes"
+	"be23/internal/utils"
 	"fmt"
-	"main/configs"
-	"main/internal/routes"
-	"main/internal/utils"
+	"log"
 
-	"main/internal/features/users"
-	userHandler "main/internal/features/users/handler"
-	userRepository "main/internal/features/users/repository"
-	userServices "main/internal/features/users/services"
+	"be23/internal/features/users"
+	userHandler "be23/internal/features/users/handler"
+	userRepository "be23/internal/features/users/repository"
+	userServices "be23/internal/features/users/services"
 
-	"main/internal/features/todos"
-	todoHandler "main/internal/features/todos/handler"
-	todoRepository "main/internal/features/todos/repository"
-	todoServices "main/internal/features/todos/services"
+	"be23/internal/features/todos"
+	todoHandler "be23/internal/features/todos/handler"
+	todoRepository "be23/internal/features/todos/repository"
+	todoServices "be23/internal/features/todos/services"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -49,8 +50,12 @@ func main() {
 		return
 	}
 
-	connection.AutoMigrate(&todoRepository.Todo{}, &userRepository.User{})
+	err = connection.AutoMigrate(&todoRepository.Todo{}, &userRepository.User{})
 
+	if err != nil {
+		log.Fatal("Stop program, masalah pada migrasi database", err.Error())
+		return
+	}
 	e := echo.New()
 
 	e.Pre(middleware.RemoveTrailingSlash())

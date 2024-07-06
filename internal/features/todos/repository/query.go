@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"be23/internal/features/todos"
 	"fmt"
-	"main/internal/features/todos"
 	"time"
 
 	"gorm.io/gorm"

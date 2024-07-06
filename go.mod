@@ -1,4 +1,4 @@
-module main
+module be23
 
 go 1.22.2
 

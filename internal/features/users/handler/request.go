@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"main/internal/features/users"
+	"be23/internal/features/users"
 )
 
 type LoginRequest struct {

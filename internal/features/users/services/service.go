@@ -1,12 +1,13 @@
 package services
 
 import (
+	"be23/internal/features/users"
+	"be23/internal/utils"
 	"errors"
 	"log"
-	"main/internal/features/users"
-	"main/internal/utils"
 
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 type userServices struct {
@@ -66,15 +67,15 @@ func (us *userServices) Login(email string, password string) (users.Users, strin
 
 	result, err := us.qry.Login(email)
 	if err != nil {
-		log.Fatal("Error On Query", err)
-		return users.Users{}, "", err
+		// log.Fatal("Error On Query ", err)
+		return users.Users{}, "", gorm.ErrInvalidData
 	}
 
 	err = us.pu.CheckPassword([]byte(password), []byte(result.Password))
 
 	if err != nil {
-		log.Fatal("Error On Password", err)
-		return users.Users{}, "", err
+		// log.Fatal("Error On Password", err)
+		return users.Users{}, "", errors.New(bcrypt.ErrMismatchedHashAndPassword.Error())
 	}
 
 	token, err := us.jwt.GenerateJWT(result.ID, result.Email)

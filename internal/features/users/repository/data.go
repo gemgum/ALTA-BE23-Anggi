@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"main/internal/features/users"
+	"be23/internal/features/users"
 	"time"
 
 	"gorm.io/gorm"

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"main/internal/features/todos"
+	"be23/internal/features/todos"
 
 	"gorm.io/gorm"
 )

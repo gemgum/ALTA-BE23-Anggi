@@ -1,6 +1,6 @@
 package handler
 
-import "main/internal/features/todos"
+import "be23/internal/features/todos"
 
 type TodoRequest struct {
 	ID       uint   `json:"id"`

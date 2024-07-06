@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"main/configs"
-	"main/internal/features/todos"
-	"main/internal/features/users"
+	"be23/configs"
+	"be23/internal/features/todos"
+	"be23/internal/features/users"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
